@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hnotes</string>
+    <string name="add_note">Add Note</string>
+    <string name="your_notes">Your Notes</string>
+    <string name="enter_here">Enter here</string>
+    <string name="no_notes_found">No Notes found</string>
+    <string name="content_description_done">Done</string>
+    <string name="content_description_add">Add</string>
+</resources>
