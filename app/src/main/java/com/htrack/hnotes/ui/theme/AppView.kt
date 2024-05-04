@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.htrack.hnotes.ui.theme.HnotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
