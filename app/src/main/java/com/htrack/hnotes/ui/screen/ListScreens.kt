@@ -37,11 +37,11 @@ import com.htrack.hnotes.ui.theme.ScreenCore
 fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
     val notesList by viewModel.noteList.observeAsState()
 
-    ScreenCore(
-        title = stringResource(R.string.your_notes),
-        actions = { NoteListScreenActions(navController) }) { pv ->
+    ScreenCore(title = stringResource(R.string.your_notes),
+        actions = { NoteListScreenActions(navController, viewModel) }) { pv ->
         NoteList(
             navController = navController,
+            viewModel = viewModel,
             paddingValues = pv,
             itemsList = notesList ?: emptyList()
         )
@@ -49,8 +49,11 @@ fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
 }
 
 @Composable
-fun NoteListScreenActions(navController: NavHostController) {
-    IconButton(onClick = { navController.navigate(SCREEN_CREATE_NOTE) }) {
+fun NoteListScreenActions(navController: NavHostController, viewModel: MainViewModel) {
+    IconButton(onClick = {
+        viewModel.selectedNote = null
+        navController.navigate(SCREEN_CREATE_NOTE)
+    }) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = stringResource(R.string.content_description_add)
@@ -59,50 +62,50 @@ fun NoteListScreenActions(navController: NavHostController) {
 }
 
 @Composable
-fun NoteItem(navController: NavHostController, item: Note) {
+fun NoteList(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    paddingValues: PaddingValues,
+    itemsList: List<Note>
+) {
+    if (itemsList.isEmpty()) Text(
+        text = stringResource(id = R.string.no_notes_found),
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+            .wrapContentHeight(),
+    )
+    else LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(paddingValues)
+            .padding(start = 16.dp, end = 16.dp)
+    ) {
+        items(itemsList) { n ->
+            NoteItem(n) {
+                viewModel.selectedNote = n
+                navController.navigate(SCREEN_CREATE_NOTE)
+            }
+        }
+    }
+}
+
+@Composable
+fun NoteItem(item: Note, clickable: () -> Unit) {
     Column {
-        Text(
-            modifier = Modifier
-                .clickable { navController.navigate(SCREEN_CREATE_NOTE) }
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(4.dp))
-                .padding(4.dp),
+        Text(modifier = Modifier
+            .clickable { clickable() }
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(4.dp))
+            .padding(4.dp),
             text = item.info ?: "",
             fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onPrimary
-        )
+            color = MaterialTheme.colorScheme.onPrimary)
         HorizontalDivider(
             modifier = Modifier.padding(4.dp),
             color = MaterialTheme.colorScheme.onPrimary,
             thickness = 0.1.dp
         )
     }
-}
-
-@Composable
-fun NoteList(
-    navController: NavHostController,
-    paddingValues: PaddingValues,
-    itemsList: List<Note>
-) {
-    if (itemsList.isEmpty())
-        Text(
-            text = stringResource(id = R.string.no_notes_found),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .wrapContentHeight(),
-        )
-    else
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(paddingValues)
-                .padding(start = 16.dp, end = 16.dp)
-        ) {
-            items(itemsList) { itemsListText ->
-                NoteItem(navController, itemsListText)
-            }
-        }
 }

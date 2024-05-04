@@ -30,7 +30,10 @@ import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
 fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel) {
-    var note by remember { mutableStateOf("") }
+    val oldNote = viewModel.selectedNote
+
+    var note by remember { mutableStateOf(oldNote?.info ?: "") }
+
     ScreenCore(
         title = stringResource(R.string.add_note),
         navigationIcon = {
@@ -39,7 +42,24 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
             }
         },
         actions = {
-            CreateNoteScreenActions(navController, viewModel, Note(info = note))
+            CreateNoteScreenActions(
+                null != oldNote,
+                deleteClick = {
+                    viewModel.deleteTodo(viewModel.selectedNote)
+                    navController.popBackStack()
+                },
+                addClick = {
+                    if (note.isEmpty()) {
+                        return@CreateNoteScreenActions
+                    }
+                    if (null != oldNote) {
+                        oldNote.info = note
+                        viewModel.updateNote(oldNote)
+                    } else {
+                        viewModel.addNote(Note(info = note))
+                    }
+                    navController.popBackStack()
+                })
         }) { pv ->
         TextField(
             modifier = Modifier
@@ -53,6 +73,7 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
             },
             placeholder = { Text(stringResource(R.string.enter_here)) },
             colors = TextFieldDefaults.colors(
+                cursorColor = MaterialTheme.colorScheme.onPrimary,
                 disabledTextColor = MaterialTheme.colorScheme.onPrimary,
                 focusedTextColor = MaterialTheme.colorScheme.onPrimary,
                 focusedContainerColor = Color.Transparent,
@@ -70,31 +91,19 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
 
 @Composable
 fun CreateNoteScreenActions(
-    navController: NavHostController,
-    viewModel: MainViewModel,
-    note: Note
+    showDelete: Boolean = false,
+    addClick: () -> Unit = {},
+    deleteClick: () -> Unit = {}
 ) {
-    if (note.id != 0) {
-        IconButton(onClick = {
-            if (note.info?.trim()?.isEmpty() == true) {
-                return@IconButton
-            }
-            viewModel.deleteTodo(note)
-            navController.popBackStack()
-        }) {
+    if (showDelete) {
+        IconButton(onClick = { deleteClick() }) {
             Icon(
                 imageVector = Icons.Default.Delete,
                 contentDescription = stringResource(R.string.content_description_delete)
             )
         }
     }
-    IconButton(onClick = {
-        if (note.info?.trim()?.isEmpty() == true) {
-            return@IconButton
-        }
-        viewModel.addNote(note)
-        navController.popBackStack()
-    }) {
+    IconButton(onClick = { addClick() }) {
         Icon(
             imageVector = Icons.Default.Done,
             contentDescription = stringResource(R.string.content_description_done)
