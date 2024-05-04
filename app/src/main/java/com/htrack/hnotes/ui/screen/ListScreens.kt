@@ -1,11 +1,17 @@
 package com.htrack.hnotes.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,12 +20,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,7 +36,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
-import com.htrack.hnotes.ui.view.ScreenCore
+import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
 fun NoteListScreen(navController: NavHostController, notesList: List<String>) {
@@ -62,11 +71,12 @@ fun NoteItem(navController: NavHostController, item: String) {
                 .clip(RoundedCornerShape(4.dp))
                 .padding(4.dp),
             text = item,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = MaterialTheme.colorScheme.onPrimary
         )
         HorizontalDivider(
             modifier = Modifier.padding(4.dp),
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onPrimary,
             thickness = 0.1.dp
         )
     }
@@ -78,25 +88,26 @@ fun NoteList(
     paddingValues: PaddingValues,
     itemsList: List<String>
 ) {
-    Column {
-        if (itemsList.isEmpty())
-            Text(
-                modifier = Modifier.fillMaxSize(),
-                text = stringResource(id = R.string.no_notes_found)
-            )
-        else
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .padding(start = 16.dp, end = 16.dp)
-            ) {
-                items(itemsList) { itemsListText ->
-                    NoteItem(navController, itemsListText)
-                }
+    if (itemsList.isEmpty())
+        Text(
+            text = stringResource(id = R.string.no_notes_found),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .wrapContentHeight(),
+        )
+    else
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(start = 16.dp, end = 16.dp)
+        ) {
+            items(itemsList) { itemsListText ->
+                NoteItem(navController, itemsListText)
             }
-    }
-
+        }
 }
 
 @Preview(showSystemUi = true, showBackground = true)

@@ -20,22 +20,25 @@ import androidx.core.view.WindowCompat
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    background = Purple80,
+    onPrimary = Purple40,
+    onSecondary = Purple40,
+    onTertiary = Purple40,
+    onBackground = Purple40,
+    onSurface = Purple40,
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-    /* Other default colors to override
-        background = Color(0xFF9F9F9F)
-        surface = Color(0xFFFFFBFE),
-        onPrimary = Color.White,
-        onSecondary = Color.White,
-        onTertiary = Color.White,
-        onBackground = Color(0xFF1C1B1F),
-        onSurface = Color(0xFF1C1B1F),
-    */
+    background = Purple40,
+    onPrimary = Purple80,
+    onSecondary = Purple80,
+    onTertiary = Purple80,
+    onBackground = Purple40,
+    onSurface = Purple40,
 )
 
 @Composable
@@ -59,6 +62,7 @@ fun HnotesTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
+            window.navigationBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }

@@ -1,5 +1,6 @@
-package com.htrack.hnotes.ui.view
+package com.htrack.hnotes.ui.theme
 
+import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,6 +34,7 @@ fun ScreenCore(
     screen: @Composable (paddingValues: PaddingValues) -> Unit
 ) {
     HnotesTheme {
+        SystemBarStyle
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -40,6 +43,12 @@ fun ScreenCore(
                 modifier = Modifier.fillMaxSize(),
                 topBar = {
                     CenterAlignedTopAppBar(
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
+                            actionIconContentColor = MaterialTheme.colorScheme.onSecondary
+                        ),
                         title = { Text(text = title) },
                         navigationIcon = navigationIcon,
                         actions = { actions() }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -23,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
-import com.htrack.hnotes.ui.view.BackNavigationIcon
-import com.htrack.hnotes.ui.view.ScreenCore
+import com.htrack.hnotes.ui.theme.BackNavigationIcon
+import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
 fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<String>) {
@@ -51,6 +52,8 @@ fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<St
             },
             placeholder = { Text(stringResource(R.string.enter_here)) },
             colors = TextFieldDefaults.colors(
+                disabledTextColor = MaterialTheme.colorScheme.onPrimary,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimary,
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
                 disabledContainerColor = Color.Transparent,
