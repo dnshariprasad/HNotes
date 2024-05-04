@@ -18,29 +18,32 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun NoteListScreen(navController: NavHostController, notesList: List<Note>) {
+fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val notesList by viewModel.noteList.observeAsState()
+
     ScreenCore(
         title = stringResource(R.string.your_notes),
         actions = { NoteListScreenActions(navController) }) { pv ->
         NoteList(
             navController = navController,
             paddingValues = pv,
-            itemsList = notesList
+            itemsList = notesList ?: emptyList()
         )
     }
 }
@@ -102,11 +105,4 @@ fun NoteList(
                 NoteItem(navController, itemsListText)
             }
         }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun ListScreenPreview() {
-    val navController = rememberNavController()
-    NoteListScreen(navController, mutableListOf())
 }

@@ -19,17 +19,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
-import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<Note>) {
+fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel) {
     var note by remember { mutableStateOf("") }
     ScreenCore(
         title = stringResource(R.string.add_note),
@@ -39,7 +37,7 @@ fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<No
             }
         },
         actions = {
-            CreateNoteScreenActions(navController, notesList, note)
+            CreateNoteScreenActions(navController, viewModel, note)
         }) { pv ->
         TextField(
             modifier = Modifier
@@ -71,14 +69,14 @@ fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<No
 @Composable
 fun CreateNoteScreenActions(
     navController: NavHostController,
-    notesList: MutableList<Note>,
+    viewModel: MainViewModel,
     note: String
 ) {
     IconButton(onClick = {
         if (note.trim().isEmpty()) {
             return@IconButton
         }
-        notesList.add(Note(info = note))
+        viewModel.addNote(note)
         navController.popBackStack()
     }) {
         Icon(
@@ -86,11 +84,4 @@ fun CreateNoteScreenActions(
             contentDescription = stringResource(R.string.content_description_done)
         )
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun CreateNoteScreenPreview() {
-    val navController = rememberNavController()
-    CreateNoteScreen(navController, mutableListOf())
 }
