@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
+import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
 import com.htrack.hnotes.ui.theme.ScreenCore
 
@@ -37,7 +39,7 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
             }
         },
         actions = {
-            CreateNoteScreenActions(navController, viewModel, note)
+            CreateNoteScreenActions(navController, viewModel, Note(info = note))
         }) { pv ->
         TextField(
             modifier = Modifier
@@ -70,10 +72,24 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
 fun CreateNoteScreenActions(
     navController: NavHostController,
     viewModel: MainViewModel,
-    note: String
+    note: Note
 ) {
+    if (note.id != 0) {
+        IconButton(onClick = {
+            if (note.info?.trim()?.isEmpty() == true) {
+                return@IconButton
+            }
+            viewModel.deleteTodo(note)
+            navController.popBackStack()
+        }) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = stringResource(R.string.content_description_delete)
+            )
+        }
+    }
     IconButton(onClick = {
-        if (note.trim().isEmpty()) {
+        if (note.info?.trim()?.isEmpty() == true) {
             return@IconButton
         }
         viewModel.addNote(note)

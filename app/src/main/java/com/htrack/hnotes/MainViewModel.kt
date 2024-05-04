@@ -13,15 +13,15 @@ class MainViewModel : ViewModel() {
     val noteList: LiveData<List<Note>> = noteDao.getAllTodo()
 
 
-    fun addNote(info: String) {
+    fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            noteDao.addTodo(Note(info = info))
+            noteDao.addTodo(Note(info = note.info))
         }
     }
 
-    fun deleteTodo(id: Int) {
+    fun deleteTodo(note: Note) {
         viewModelScope.launch(Dispatchers.IO) {
-            noteDao.deleteTodo(id)
+            noteDao.deleteTodo(note.id)
         }
     }
 }
