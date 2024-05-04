@@ -28,11 +28,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
+import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun NoteListScreen(navController: NavHostController, notesList: List<String>) {
+fun NoteListScreen(navController: NavHostController, notesList: List<Note>) {
     ScreenCore(
         title = stringResource(R.string.your_notes),
         actions = { NoteListScreenActions(navController) }) { pv ->
@@ -55,7 +56,7 @@ fun NoteListScreenActions(navController: NavHostController) {
 }
 
 @Composable
-fun NoteItem(navController: NavHostController, item: String) {
+fun NoteItem(navController: NavHostController, item: Note) {
     Column {
         Text(
             modifier = Modifier
@@ -63,7 +64,7 @@ fun NoteItem(navController: NavHostController, item: String) {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(4.dp))
                 .padding(4.dp),
-            text = item,
+            text = item.info ?: "",
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.onPrimary
         )
@@ -79,7 +80,7 @@ fun NoteItem(navController: NavHostController, item: String) {
 fun NoteList(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    itemsList: List<String>
+    itemsList: List<Note>
 ) {
     if (itemsList.isEmpty())
         Text(

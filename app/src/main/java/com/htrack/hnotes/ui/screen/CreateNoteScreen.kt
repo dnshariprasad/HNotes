@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
+import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<String>) {
+fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<Note>) {
     var note by remember { mutableStateOf("") }
     ScreenCore(
         title = stringResource(R.string.add_note),
@@ -70,14 +71,14 @@ fun CreateNoteScreen(navController: NavHostController, notesList: MutableList<St
 @Composable
 fun CreateNoteScreenActions(
     navController: NavHostController,
-    notesList: MutableList<String>,
+    notesList: MutableList<Note>,
     note: String
 ) {
     IconButton(onClick = {
         if (note.trim().isEmpty()) {
             return@IconButton
         }
-        notesList.add(note)
+        notesList.add(Note(info = note))
         navController.popBackStack()
     }) {
         Icon(
