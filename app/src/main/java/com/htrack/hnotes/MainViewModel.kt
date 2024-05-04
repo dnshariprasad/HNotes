@@ -1,5 +1,6 @@
 package com.htrack.hnotes
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,22 +14,42 @@ class MainViewModel : ViewModel() {
 
     val noteList: LiveData<List<Note>> = noteDao.getAllNote()
 
-    var selectedNote: Note? = null
+    var selectedNote = mutableStateOf(Note())
 
-    fun addNote(note: Note) {
-        viewModelScope.launch(Dispatchers.IO) {
-            noteDao.addNote(Note(info = note.info))
+    fun onTitleChanged(newTitle: String?) {
+        selectedNote.value = selectedNote.value.copy(title = newTitle)
+    }
+
+    fun onInfoChanged(newInfo: String?) {
+        selectedNote.value = selectedNote.value.copy(info = newInfo)
+    }
+
+    fun addOrUpdateNote() {
+        if (0 != selectedNote.value.id) {
+            updateNote()
+        } else {
+            addNote()
         }
     }
 
-    fun updateNote(note: Note) {
-        viewModelScope.launch(Dispatchers.IO) {
-            noteDao.updateNote(note)
+    private fun addNote() {
+        selectedNote.value.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                noteDao.addNote(it)
+            }
         }
     }
 
-    fun deleteTodo(note: Note?) {
-        note?.id?.let {
+    private fun updateNote() {
+        selectedNote.value.let {
+            viewModelScope.launch(Dispatchers.IO) {
+                noteDao.updateNote(it)
+            }
+        }
+    }
+
+    fun deleteTodo() {
+        selectedNote.value.id.let {
             viewModelScope.launch(Dispatchers.IO) {
                 noteDao.deleteNote(it)
             }

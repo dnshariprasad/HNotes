@@ -20,8 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,7 +51,7 @@ fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
 @Composable
 fun NoteListScreenActions(navController: NavHostController, viewModel: MainViewModel) {
     IconButton(onClick = {
-        viewModel.selectedNote = null
+        viewModel.selectedNote = mutableStateOf(Note())
         navController.navigate(SCREEN_CREATE_NOTE)
     }) {
         Icon(
@@ -84,7 +84,7 @@ fun NoteList(
     ) {
         items(itemsList) { n ->
             NoteItem(n) {
-                viewModel.selectedNote = n
+                viewModel.selectedNote = mutableStateOf(n)
                 navController.navigate(SCREEN_CREATE_NOTE)
             }
         }
@@ -94,16 +94,25 @@ fun NoteList(
 @Composable
 fun NoteItem(item: Note, clickable: () -> Unit) {
     Column {
-        Text(modifier = Modifier
-            .clickable { clickable() }
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp))
-            .padding(4.dp),
-            text = item.info ?: "",
-            fontSize = 16.sp,
-            color = MaterialTheme.colorScheme.onPrimary)
+        if (true != item.title?.isEmpty())
+            Text(modifier = Modifier
+                .clickable { clickable() }
+                .fillMaxWidth()
+                .padding(4.dp),
+                text = item.title ?: "",
+                fontSize = 16.sp,
+                maxLines = 1,
+                color = MaterialTheme.colorScheme.onPrimary)
+        if (true != item.info?.isEmpty())
+            Text(modifier = Modifier
+                .clickable { clickable() }
+                .fillMaxWidth(),
+                text = item.info ?: "",
+                fontSize = 14.sp,
+                maxLines = 2,
+                color = MaterialTheme.colorScheme.onPrimary)
         HorizontalDivider(
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.padding(top = 4.dp),
             color = MaterialTheme.colorScheme.onPrimary,
             thickness = 0.1.dp
         )

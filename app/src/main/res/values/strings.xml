@@ -2,9 +2,11 @@
     <string name="app_name">Hnotes</string>
     <string name="add_note">Add Note</string>
     <string name="your_notes">Your Notes</string>
-    <string name="enter_here">Enter here</string>
+    <string name="enter_title_here">Enter title here</string>
+    <string name="enter_note_here">Enter note here</string>
     <string name="no_notes_found">No Notes found</string>
     <string name="content_description_done">Done</string>
     <string name="content_description_add">Add</string>
     <string name="content_description_delete">Delete</string>
+    <string name="are_sure_do_you_want_to_delete">Are sure do you want to delete?</string>
 </resources>

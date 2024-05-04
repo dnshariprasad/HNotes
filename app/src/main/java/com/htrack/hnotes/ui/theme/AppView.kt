@@ -19,10 +19,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -69,6 +72,34 @@ fun BackNavigationIcon(backNavigationAction: () -> Unit) {
             contentDescription = "Go back"
         )
     }
+}
+
+@Composable
+fun HTextField(
+    modifier: Modifier = Modifier,
+    text: String,
+    hint: String,
+    onValueChange: (String?) -> Unit
+) {
+    TextField(
+        modifier = modifier,
+        value = text,
+        onValueChange = onValueChange,
+        placeholder = { Text(hint) },
+        colors = TextFieldDefaults.colors(
+            cursorColor = MaterialTheme.colorScheme.onPrimary,
+            disabledTextColor = MaterialTheme.colorScheme.onPrimary,
+            focusedTextColor = MaterialTheme.colorScheme.onPrimary,
+            focusedContainerColor = Color.Transparent,
+            unfocusedContainerColor = Color.Transparent,
+            disabledContainerColor = Color.Transparent,
+            errorContainerColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            errorIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+        )
+    )
 }
 
 @Composable
