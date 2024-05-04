@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -78,4 +80,38 @@ fun HButton(text: String, click: () -> Unit) {
             .background(MaterialTheme.colorScheme.primary),
         onClick = click
     ) { Text(text = text, fontSize = 16.sp, maxLines = 1) }
+}
+
+@Composable
+fun AlertDialog(
+    dialogText: String = "",
+    onDismissRequest: () -> Unit = {},
+    onConfirmation: () -> Unit = {},
+) {
+    AlertDialog(
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text("Confirm", color = MaterialTheme.colorScheme.onPrimary)
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Dismiss", color = MaterialTheme.colorScheme.onPrimary)
+            }
+        }
+    )
 }

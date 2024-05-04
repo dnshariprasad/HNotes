@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.ui.theme.AlertDialog
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
 import com.htrack.hnotes.ui.theme.ScreenCore
 
@@ -33,6 +34,7 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
     val oldNote = viewModel.selectedNote
 
     var note by remember { mutableStateOf(oldNote?.info ?: "") }
+    var showAlert by remember { mutableStateOf(false) }
 
     ScreenCore(
         title = stringResource(R.string.add_note),
@@ -45,8 +47,7 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
             CreateNoteScreenActions(
                 null != oldNote,
                 deleteClick = {
-                    viewModel.deleteTodo(viewModel.selectedNote)
-                    navController.popBackStack()
+                    showAlert = !showAlert
                 },
                 addClick = {
                     if (note.isEmpty()) {
@@ -86,6 +87,14 @@ fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel)
                 unfocusedIndicatorColor = Color.Transparent,
             )
         )
+
+        if (showAlert) {
+            AlertDialog(dialogText = "Are sure do you want to delete?") {
+                viewModel.deleteTodo(viewModel.selectedNote)
+                navController.popBackStack()
+                showAlert = !showAlert
+            }
+        }
     }
 }
 
