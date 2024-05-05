@@ -1,30 +1,44 @@
 package com.htrack.hnotes
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.Navigator
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.MainScreen
+import com.htrack.hnotes.ui.screen.Screens
 
 class MainActivity : ComponentActivity() {
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewMode: MainViewModel
+    private lateinit var navController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewMode = ViewModelProvider(this)[MainViewModel::class.java]
         setContent {
-            MainScreen(mainViewModel)
+            navController = rememberNavController()
+            MainScreen(navController, viewMode)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        intent.action?.let { action ->
+
+            if (action == Intent.ACTION_SEND && intent.type == "text/plain") {
+                intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
+                    viewMode.selectedNote = mutableStateOf(Note(info = text))
+                    navController.navigate(Screens.SCREEN_CREATE_NOTE)
+                }
+            }
         }
     }
 }
-
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    lateinit var mainViewModel: MainViewModel
-    MainScreen(mainViewModel)
-}
-
-

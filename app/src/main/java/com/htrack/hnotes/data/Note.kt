@@ -9,8 +9,8 @@ data class Note(
     val id: Int = 0,
     var title: String? = "",
     var info: String? = "",
-//    val type: String? = "",
-//    val time: String? = "",
-//    val tags: List<Tag>? = emptyList()
+    var link: String? = "",
+    val type: String? = "",
+    val tags: String = ""
 )
 

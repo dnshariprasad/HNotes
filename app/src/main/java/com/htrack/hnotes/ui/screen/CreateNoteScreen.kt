@@ -30,7 +30,10 @@ import com.htrack.hnotes.ui.theme.HTextField
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun CreateNoteScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun CreateNoteScreen(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+) {
     var showAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current // Moved LocalContext inside NoteList
 
