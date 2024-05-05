@@ -24,6 +24,10 @@ class MainViewModel : ViewModel() {
         selectedNote.value = selectedNote.value.copy(info = newInfo)
     }
 
+    fun onLinkChanged(link: String?) {
+        selectedNote.value = selectedNote.value.copy(link = link)
+    }
+
     fun addOrUpdateNote() {
         if (0 != selectedNote.value.id) {
             updateNote()
@@ -53,6 +57,15 @@ class MainViewModel : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 noteDao.deleteNote(it)
             }
+        }
+    }
+
+    fun handleShareData(stringExtra: String?) {
+        val d = stringExtra ?: ""
+        selectedNote = when {
+            d.isLocationUrl() -> mutableStateOf(Note(link = stringExtra ?: "", tags = "location"))
+            d.isUrl() -> mutableStateOf(Note(link = stringExtra ?: "", tags = "link"))
+            else -> mutableStateOf(Note(info = stringExtra ?: "", tags = "text"))
         }
     }
 }

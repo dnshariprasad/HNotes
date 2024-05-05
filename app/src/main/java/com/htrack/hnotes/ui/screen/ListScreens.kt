@@ -31,6 +31,7 @@ import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
+import com.htrack.hnotes.ui.theme.HHorizontalDivider
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
@@ -111,10 +112,6 @@ fun NoteItem(item: Note, clickable: () -> Unit) {
                 fontSize = 14.sp,
                 maxLines = 2,
                 color = MaterialTheme.colorScheme.onPrimary)
-        HorizontalDivider(
-            modifier = Modifier.padding(top = 4.dp),
-            color = MaterialTheme.colorScheme.onPrimary,
-            thickness = 0.1.dp
-        )
+        HHorizontalDivider()
     }
 }

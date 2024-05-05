@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +29,7 @@ import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.ui.theme.AlertDialog
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
+import com.htrack.hnotes.ui.theme.HHorizontalDivider
 import com.htrack.hnotes.ui.theme.HTextField
 import com.htrack.hnotes.ui.theme.ScreenCore
 
@@ -73,11 +77,13 @@ fun CreateNoteScreen(
                     .fillMaxWidth()
                     .wrapContentHeight()
                     .padding(start = 8.dp, end = 8.dp),
+                maxLines = 2,
                 text = viewModel.selectedNote.value.title ?: "",
                 hint = stringResource(R.string.enter_title_here)
             ) { t ->
                 viewModel.onTitleChanged(t)
             }
+            HHorizontalDivider()
             HTextField(
                 modifier = Modifier
                     .weight(1F)
@@ -88,6 +94,18 @@ fun CreateNoteScreen(
                 hint = stringResource(R.string.enter_note_here)
             ) { t ->
                 viewModel.onInfoChanged(t)
+            }
+            HHorizontalDivider()
+            HTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(start = 8.dp, end = 8.dp),
+                text = viewModel.selectedNote.value.link ?: "",
+                hint = stringResource(R.string.enter_url_here),
+                maxLines = 3,
+            ) { t ->
+                viewModel.onLinkChanged(t)
             }
         }
         if (showAlert) {

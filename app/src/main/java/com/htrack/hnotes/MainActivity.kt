@@ -32,12 +32,9 @@ class MainActivity : ComponentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         intent.action?.let { action ->
-
             if (action == Intent.ACTION_SEND && intent.type == "text/plain") {
-                intent.getStringExtra(Intent.EXTRA_TEXT)?.let { text ->
-                    viewMode.selectedNote = mutableStateOf(Note(info = text))
-                    navController.navigate(Screens.SCREEN_CREATE_NOTE)
-                }
+                viewMode.handleShareData(intent.getStringExtra(Intent.EXTRA_TEXT))
+                navController.navigate(Screens.SCREEN_CREATE_NOTE)
             }
         }
     }

@@ -15,18 +15,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = Purple80,
-    onPrimary = Purple40,
-    onSecondary = Purple40,
-    onTertiary = Purple40,
-    onBackground = Purple40,
-    onSurface = Purple40,
-)
-
 private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
@@ -35,9 +23,22 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = Purple80,
     onSecondary = Purple80,
     onTertiary = Purple80,
+    onBackground = Purple80,
+    onSurface = Purple80,
+)
+
+private val DarkColorScheme = darkColorScheme(
+    primary = Purple80,
+    secondary = PurpleGrey80,
+    tertiary = Pink80,
+    background = Purple80,
+    onPrimary = Pink40,
+    onSecondary = Purple40,
+    onTertiary = Purple40,
     onBackground = Purple40,
     onSurface = Purple40,
 )
+
 
 @Composable
 fun HnotesTheme(
