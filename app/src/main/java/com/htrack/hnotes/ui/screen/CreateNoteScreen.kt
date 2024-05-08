@@ -1,27 +1,36 @@
 package com.htrack.hnotes.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -67,6 +76,8 @@ fun CreateNoteScreen(
                     navController.popBackStack()
                 })
         }) { pv ->
+        val openUrlLauncher =
+            rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ -> }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -96,17 +107,39 @@ fun CreateNoteScreen(
                 viewModel.onInfoChanged(t)
             }
             HHorizontalDivider()
-            HTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(start = 8.dp, end = 8.dp),
-                text = viewModel.selectedNote.value.link ?: "",
-                hint = stringResource(R.string.enter_url_here),
-                maxLines = 3,
-            ) { t ->
-                viewModel.onLinkChanged(t)
+            Row(
+                modifier = Modifier.padding(end = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(start = 8.dp, end = 8.dp),
+                    text = viewModel.selectedNote.value.link ?: "",
+                    hint = stringResource(R.string.enter_url_here),
+                    maxLines = 3,
+                ) { t ->
+                    viewModel.onLinkChanged(t)
+                }
+                Image(
+                    modifier = Modifier.clickable {
+                        if ((viewModel.selectedNote.value.link?.length ?: 0) > 0) {
+                            val intent =
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse(viewModel.selectedNote.value.link)
+                                )
+                            openUrlLauncher.launch(intent)
+                        }
+                    },
+                    contentScale = ContentScale.FillHeight,
+                    painter = painterResource(R.drawable.outline_open_in_new_24),
+                    contentDescription = stringResource(R.string.content_open_url)
+                )
             }
+
         }
         if (showAlert) {
             AlertDialog(dialogText = stringResource(R.string.are_sure_do_you_want_to_delete)) {
@@ -122,8 +155,15 @@ fun CreateNoteScreen(
 fun CreateNoteScreenActions(
     showDelete: Boolean = false,
     addClick: () -> Unit = {},
-    deleteClick: () -> Unit = {}
+    deleteClick: () -> Unit = {},
+    shareClick: () -> Unit = {}
 ) {
+    IconButton(onClick = { shareClick() }) {
+        Icon(
+            imageVector = Icons.Default.Share,
+            contentDescription = stringResource(R.string.content_description_share)
+        )
+    }
     if (showDelete) {
         IconButton(onClick = { deleteClick() }) {
             Icon(
@@ -138,4 +178,5 @@ fun CreateNoteScreenActions(
             contentDescription = stringResource(R.string.content_description_done)
         )
     }
+
 }

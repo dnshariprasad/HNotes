@@ -7,7 +7,9 @@
     <string name="enter_note_here">Info here</string>
     <string name="no_notes_found">No Notes found</string>
     <string name="content_description_done">Done</string>
+    <string name="content_description_share">Share</string>
     <string name="content_description_add">Add</string>
     <string name="content_description_delete">Delete</string>
+    <string name="content_open_url">Open Url</string>
     <string name="are_sure_do_you_want_to_delete">Are sure do you want to delete?</string>
 </resources>

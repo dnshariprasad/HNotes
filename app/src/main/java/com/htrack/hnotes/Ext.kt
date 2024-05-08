@@ -13,5 +13,5 @@ fun String.isUrl(): Boolean {
 fun String.isLocationUrl(): Boolean {
     val urlRegex = Regex(urlRegexStr)
     val coordinateRegex = Regex(coordinateUrlRegexStr)
-    return urlRegex.matches(this) || coordinateRegex.matches(this)
+    return urlRegex.matches(this) && coordinateRegex.matches(this)
 }

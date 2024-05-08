@@ -63,9 +63,9 @@ class MainViewModel : ViewModel() {
     fun handleShareData(stringExtra: String?) {
         val d = stringExtra ?: ""
         selectedNote = when {
-            d.isLocationUrl() -> mutableStateOf(Note(link = stringExtra ?: "", tags = "location"))
-            d.isUrl() -> mutableStateOf(Note(link = stringExtra ?: "", tags = "link"))
-            else -> mutableStateOf(Note(info = stringExtra ?: "", tags = "text"))
+            d.isLocationUrl() -> mutableStateOf(Note(link = stringExtra ?: "", type = "location"))
+            d.isUrl() -> mutableStateOf(Note(link = stringExtra ?: "", type = "link"))
+            else -> mutableStateOf(Note(info = stringExtra ?: "", type = "text"))
         }
     }
 }
