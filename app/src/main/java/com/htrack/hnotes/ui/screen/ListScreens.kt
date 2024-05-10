@@ -91,6 +91,7 @@ fun NoteList(
             .fillMaxSize()
             .padding(paddingValues)
             .wrapContentHeight(),
+        fontFamily = FontFamily(Font(R.font.poppins_regular))
     )
     else LazyColumn(
         modifier = Modifier

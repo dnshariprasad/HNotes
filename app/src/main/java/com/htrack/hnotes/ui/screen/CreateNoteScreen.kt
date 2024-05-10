@@ -7,7 +7,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,6 +20,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,7 +32,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
@@ -72,6 +76,9 @@ fun CreateNoteScreen(
                         Toast.makeText(context, "Please enter info", Toast.LENGTH_SHORT).show()
                         return@CreateNoteScreenActions
                     }
+                    if (viewModel.selectedNote.value.link?.isNotEmpty() == true) {
+                        viewModel.selectedNote.value.type = "link"
+                    }
                     viewModel.addOrUpdateNote()
                     navController.popBackStack()
                 })
@@ -90,7 +97,8 @@ fun CreateNoteScreen(
                     .padding(start = 8.dp, end = 8.dp),
                 maxLines = 2,
                 text = viewModel.selectedNote.value.title ?: "",
-                hint = stringResource(R.string.enter_title_here)
+                hint = stringResource(R.string.enter_title_here),
+                textStyle = MaterialTheme.typography.titleMedium
             ) { t ->
                 viewModel.onTitleChanged(t)
             }
@@ -102,14 +110,15 @@ fun CreateNoteScreen(
                     .fillMaxHeight()
                     .padding(start = 8.dp, end = 8.dp),
                 text = viewModel.selectedNote.value.info ?: "",
-                hint = stringResource(R.string.enter_note_here)
+                hint = stringResource(R.string.enter_note_here),
+                textStyle = MaterialTheme.typography.bodyMedium
             ) { t ->
                 viewModel.onInfoChanged(t)
             }
             HHorizontalDivider()
             Row(
                 modifier = Modifier.padding(end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 HTextField(
                     modifier = Modifier
@@ -120,6 +129,7 @@ fun CreateNoteScreen(
                     text = viewModel.selectedNote.value.link ?: "",
                     hint = stringResource(R.string.enter_url_here),
                     maxLines = 3,
+                    textStyle = MaterialTheme.typography.bodyMedium
                 ) { t ->
                     viewModel.onLinkChanged(t)
                 }

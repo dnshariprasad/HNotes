@@ -10,7 +10,7 @@ data class Note(
     var title: String? = "",
     var info: String? = "",
     var link: String? = "",
-    val type: String? = "",
+    var type: String? = "",
     val tags: String = ""
 )
 

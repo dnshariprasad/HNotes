@@ -1,6 +1,5 @@
 package com.htrack.hnotes.ui.theme
 
-import android.graphics.fonts.FontFamily
 import androidx.activity.SystemBarStyle
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,8 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.htrack.hnotes.R
@@ -95,6 +93,7 @@ fun HTextField(
     text: String = "",
     hint: String = "",
     maxLines: Int = Int.MAX_VALUE,
+    textStyle: TextStyle = TextStyle.Default,
     onValueChange: (String?) -> Unit
 ) {
     TextField(
@@ -115,7 +114,8 @@ fun HTextField(
             errorIndicatorColor = Color.Transparent,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-        )
+        ),
+        textStyle = textStyle
     )
 }
 
