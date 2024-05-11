@@ -126,8 +126,7 @@ fun NoteItem(
 ) {
     Card(
         modifier = Modifier
-            .padding(2.dp)
-            .clickable { clickable() },
+            .padding(2.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 1.dp
         ),
@@ -141,6 +140,7 @@ fun NoteItem(
     ) {
         Row(
             modifier = Modifier
+                .clickable { clickable() }
                 .padding(12.dp)
         ) {
             Column(
@@ -154,7 +154,7 @@ fun NoteItem(
                         fontSize = 14.sp,
                         maxLines = 1,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        fontFamily = FontFamily(Font(R.font.poppins_semibold))
+                        style = MaterialTheme.typography.titleMedium
                     )
                 if (true != item.info?.isEmpty())
                     Text(
@@ -163,7 +163,7 @@ fun NoteItem(
                         fontSize = 14.sp,
                         maxLines = 2,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        fontFamily = FontFamily(Font(R.font.poppins_regular))
+                        style = MaterialTheme.typography.bodyMedium
                     )
             }
             Image(
@@ -177,7 +177,9 @@ fun NoteItem(
                             linkClickable()
                         }
 
-                        else -> {}
+                        else -> {
+                            clickable()
+                        }
                     }
 
                 },
