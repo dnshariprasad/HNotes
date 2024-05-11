@@ -7,13 +7,12 @@ junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.9.0"
-composeBom = "2023.08.00"
+composeBom = "2024.05.00"
 material3Android = "1.2.1"
 navigationCompose = "2.7.7"
 room_version = "2.6.1"
 liveData = "1.6.7"
 splashScreen = "1.0.1"
-kotlinParcelize = "2.0.0-RC3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

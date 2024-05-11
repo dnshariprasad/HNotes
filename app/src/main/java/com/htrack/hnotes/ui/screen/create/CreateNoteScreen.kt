@@ -32,8 +32,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.isUrl
@@ -50,7 +53,7 @@ import com.htrack.hnotes.ui.theme.ScreenCore
 @Composable
 fun CreateNoteScreen(
     navController: NavHostController,
-    viewModel: CreateNoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: CreateNoteViewModel = viewModel()
 ) {
 
     var showAlert by remember { mutableStateOf(false) }
@@ -215,4 +218,12 @@ fun CreateNoteScreenActions(
         )
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MyComposablePreview() {
+    CreateNoteScreen(
+        navController = rememberNavController()
+    )
 }

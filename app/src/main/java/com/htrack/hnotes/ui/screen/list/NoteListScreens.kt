@@ -35,9 +35,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
@@ -48,7 +51,7 @@ import com.htrack.hnotes.ui.theme.ScreenCore
 @Composable
 fun NoteListScreen(
     navController: NavHostController,
-    viewModel: ListViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    viewModel: ListViewModel = viewModel()
 ) {
     val notesList by viewModel.noteList.observeAsState()
 
@@ -205,5 +208,13 @@ fun NoteItem(
             )
         }
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun MyComposablePreview() {
+    NoteListScreen(
+        navController = rememberNavController(),
+        viewModel = viewModel()
+    )
 }
