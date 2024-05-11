@@ -126,7 +126,6 @@ fun NoteItem(
 ) {
     Card(
         modifier = Modifier
-            .background(Color.White)
             .padding(2.dp)
             .clickable { clickable() },
         elevation = CardDefaults.cardElevation(
@@ -137,7 +136,7 @@ fun NoteItem(
             Color.Gray
         ),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.background
         )
     ) {
         Row(

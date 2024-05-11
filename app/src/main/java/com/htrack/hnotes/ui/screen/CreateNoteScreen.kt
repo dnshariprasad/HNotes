@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -24,12 +26,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -86,77 +90,88 @@ fun CreateNoteScreen(
                     intent.setType("text/plain")
                     intent.putExtra(Intent.EXTRA_TITLE, viewModel.shareNoteTitle())
                     intent.putExtra(Intent.EXTRA_TEXT, viewModel.shareNoteTest())
-                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_note)));
+                    context.startActivity(
+                        Intent.createChooser(
+                            intent,
+                            context.getString(R.string.share_note)
+                        )
+                    );
                 })
         }) { pv ->
         val openUrlLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ -> }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(pv)
-        ) {
-            HTextField(
+        val customTextSelectionColors = TextSelectionColors(
+            handleColor = MaterialTheme.colorScheme.onPrimary,
+            backgroundColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f)
+        )
+        CompositionLocalProvider(LocalTextSelectionColors provides customTextSelectionColors) {
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(start = 8.dp, end = 8.dp),
-                maxLines = 2,
-                text = viewModel.selectedNote.value.title ?: "",
-                hint = stringResource(R.string.enter_title_here),
-                textStyle = MaterialTheme.typography.titleMedium
-            ) { t ->
-                viewModel.onTitleChanged(t)
-            }
-            HHorizontalDivider()
-            HTextField(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .weight(1F)
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(start = 8.dp, end = 8.dp),
-                text = viewModel.selectedNote.value.info ?: "",
-                hint = stringResource(R.string.enter_note_here),
-                textStyle = MaterialTheme.typography.bodyMedium,
-            ) { t ->
-                viewModel.onInfoChanged(t)
-            }
-            HHorizontalDivider()
-            Row(
-                modifier = Modifier.padding(end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                    .fillMaxSize()
+                    .padding(pv)
             ) {
                 HTextField(
                     modifier = Modifier
-                        .weight(1f)
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(start = 8.dp, end = 8.dp),
-                    text = viewModel.selectedNote.value.link ?: "",
-                    hint = stringResource(R.string.enter_url_here),
-                    maxLines = 3,
-                    textStyle = MaterialTheme.typography.bodyMedium
+                    maxLines = 2,
+                    text = viewModel.selectedNote.value.title ?: "",
+                    hint = stringResource(R.string.enter_title_here),
+                    textStyle = MaterialTheme.typography.titleMedium
                 ) { t ->
-                    viewModel.onLinkChanged(t)
+                    viewModel.onTitleChanged(t)
                 }
-                Image(
-                    modifier = Modifier.clickable {
-                        if ((viewModel.selectedNote.value.link?.length ?: 0) > 0) {
-                            val intent =
-                                Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(viewModel.selectedNote.value.link)
-                                )
-                            openUrlLauncher.launch(intent)
-                        }
-                    },
-                    contentScale = ContentScale.FillHeight,
-                    painter = painterResource(R.drawable.outline_open_in_new_24),
-                    contentDescription = stringResource(R.string.content_open_url)
-                )
-            }
+                HHorizontalDivider()
+                HTextField(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .weight(1F)
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(start = 8.dp, end = 8.dp),
+                    text = viewModel.selectedNote.value.info ?: "",
+                    hint = stringResource(R.string.enter_note_here),
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                ) { t ->
+                    viewModel.onInfoChanged(t)
+                }
+                HHorizontalDivider()
+                Row(
+                    modifier = Modifier.padding(end = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    HTextField(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(start = 8.dp, end = 8.dp),
+                        text = viewModel.selectedNote.value.link ?: "",
+                        hint = stringResource(R.string.enter_url_here),
+                        maxLines = 3,
+                        textStyle = MaterialTheme.typography.bodyMedium
+                    ) { t ->
+                        viewModel.onLinkChanged(t)
+                    }
+                    Image(
+                        modifier = Modifier.clickable {
+                            if ((viewModel.selectedNote.value.link?.length ?: 0) > 0) {
+                                val intent =
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(viewModel.selectedNote.value.link)
+                                    )
+                                openUrlLauncher.launch(intent)
+                            }
+                        },
+                        contentScale = ContentScale.FillHeight,
+                        painter = painterResource(R.drawable.outline_open_in_new_24),
+                        contentDescription = stringResource(R.string.content_open_url)
+                    )
+                }
 
+            }
         }
         if (showAlert) {
             AlertDialog(dialogText = stringResource(R.string.are_sure_do_you_want_to_delete)) {
