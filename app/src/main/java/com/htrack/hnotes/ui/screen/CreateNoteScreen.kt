@@ -33,7 +33,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -56,8 +55,7 @@ fun CreateNoteScreen(
     viewModel: MainViewModel,
 ) {
     var showAlert by remember { mutableStateOf(false) }
-    val context = LocalContext.current // Moved LocalContext inside NoteList
-
+    val context = LocalContext.current
     ScreenCore(
         navigationIcon = {
             BackNavigationIcon {
@@ -89,7 +87,7 @@ fun CreateNoteScreen(
                     val intent = Intent(Intent.ACTION_SEND)
                     intent.setType("text/plain")
                     intent.putExtra(Intent.EXTRA_TITLE, viewModel.shareNoteTitle())
-                    intent.putExtra(Intent.EXTRA_TEXT, viewModel.shareNoteTest())
+                    intent.putExtra(Intent.EXTRA_TEXT, viewModel.shareNoteText())
                     context.startActivity(
                         Intent.createChooser(
                             intent,

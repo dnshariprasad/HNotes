@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.htrack.hnotes.data.Note
-import com.htrack.hnotes.ui.screen.NoteTypes
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_TEXT
@@ -36,7 +35,7 @@ class MainViewModel : ViewModel() {
         return selectedNote.value.title ?: ""
     }
 
-    fun shareNoteTest(): String {
+    fun shareNoteText(): String {
         val text = StringBuilder()
         if (true == selectedNote.value.info?.isNotEmpty()) {
             if (text.isNotEmpty())
