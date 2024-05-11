@@ -56,7 +56,13 @@ fun ScreenCore(
                             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                             actionIconContentColor = MaterialTheme.colorScheme.onSecondary
                         ),
-                        title = { Text(text = title) },
+                        title = {
+                            Text(
+                                text = title,
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        },
+
                         navigationIcon = navigationIcon,
                         actions = { actions() }
                     )

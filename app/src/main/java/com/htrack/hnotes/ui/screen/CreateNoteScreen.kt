@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
@@ -32,19 +34,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
+import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.theme.AlertDialog
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
 import com.htrack.hnotes.ui.theme.HHorizontalDivider
 import com.htrack.hnotes.ui.theme.HTextField
 import com.htrack.hnotes.ui.theme.ScreenCore
+
 
 @Composable
 fun CreateNoteScreen(
@@ -55,7 +55,6 @@ fun CreateNoteScreen(
     val context = LocalContext.current // Moved LocalContext inside NoteList
 
     ScreenCore(
-        title = stringResource(R.string.add_note),
         navigationIcon = {
             BackNavigationIcon {
                 navController.popBackStack()
@@ -77,10 +76,17 @@ fun CreateNoteScreen(
                         return@CreateNoteScreenActions
                     }
                     if (viewModel.selectedNote.value.link?.isNotEmpty() == true) {
-                        viewModel.selectedNote.value.type = "link"
+                        viewModel.selectedNote.value.type = NOTE_TYPE_LINK
                     }
                     viewModel.addOrUpdateNote()
                     navController.popBackStack()
+                },
+                shareClick = {
+                    val intent = Intent(Intent.ACTION_SEND)
+                    intent.setType("text/plain")
+                    intent.putExtra(Intent.EXTRA_TITLE, viewModel.shareNoteTitle())
+                    intent.putExtra(Intent.EXTRA_TEXT, viewModel.shareNoteTest())
+                    context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_note)));
                 })
         }) { pv ->
         val openUrlLauncher =
@@ -105,13 +111,14 @@ fun CreateNoteScreen(
             HHorizontalDivider()
             HTextField(
                 modifier = Modifier
+                    .verticalScroll(rememberScrollState())
                     .weight(1F)
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(start = 8.dp, end = 8.dp),
                 text = viewModel.selectedNote.value.info ?: "",
                 hint = stringResource(R.string.enter_note_here),
-                textStyle = MaterialTheme.typography.bodyMedium
+                textStyle = MaterialTheme.typography.bodyMedium,
             ) { t ->
                 viewModel.onInfoChanged(t)
             }

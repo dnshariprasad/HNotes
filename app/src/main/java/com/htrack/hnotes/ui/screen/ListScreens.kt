@@ -44,6 +44,8 @@ import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
+import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
 import com.htrack.hnotes.ui.theme.ScreenCore
 
@@ -130,13 +132,13 @@ fun NoteItem(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 1.dp
         ),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
         border = BorderStroke(
             0.1.dp,
             Color.Gray
         ),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.White
+        )
     ) {
         Row(
             modifier = Modifier
@@ -168,11 +170,11 @@ fun NoteItem(
             Image(
                 modifier = Modifier.clickable {
                     when (item.type) {
-                        "link" -> {
+                        NOTE_TYPE_LINK -> {
                             locationClickable()
                         }
 
-                        "location" -> {
+                        NOTE_TYPE_LOCATION -> {
                             linkClickable()
                         }
 
@@ -182,11 +184,11 @@ fun NoteItem(
                 },
                 contentScale = ContentScale.FillHeight, painter = painterResource(
                     when (item.type) {
-                        "link" -> {
+                        NOTE_TYPE_LINK -> {
                             R.drawable.outline_open_in_new_24
                         }
 
-                        "location" -> {
+                        NOTE_TYPE_LOCATION -> {
                             R.drawable.outline_open_in_new_24
                         }
 

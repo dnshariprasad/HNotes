@@ -10,10 +10,20 @@ import com.htrack.hnotes.R
 
 // Set of Material typography styles to start with
 val Typography = Typography(
+    titleLarge = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+    ),
     titleMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_semibold)),
         fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
+        fontSize = 16.sp,
+    ),
+    titleSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.poppins_semibold)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_regular)),
@@ -23,6 +33,6 @@ val Typography = Typography(
     labelSmall = TextStyle(
         fontFamily = FontFamily(Font(R.font.poppins_regular)),
         fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
+        fontSize = 12.sp,
     )
 )
