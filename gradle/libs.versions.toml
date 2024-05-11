@@ -12,7 +12,8 @@ material3Android = "1.2.1"
 navigationCompose = "2.7.7"
 room_version = "2.6.1"
 liveData = "1.6.7"
-splashScreen="1.0.1"
+splashScreen = "1.0.1"
+kotlinParcelize = "2.0.0-RC3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,3 +44,4 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrainsKotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlinParcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }

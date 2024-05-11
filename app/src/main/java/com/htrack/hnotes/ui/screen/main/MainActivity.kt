@@ -1,4 +1,4 @@
-package com.htrack.hnotes.ui.screen.activity
+package com.htrack.hnotes.ui.screen.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,6 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.htrack.hnotes.MainViewModel
-import com.htrack.hnotes.ui.screen.MainScreen
 import com.htrack.hnotes.ui.screen.Screens
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +21,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             navController = rememberNavController()
-            MainScreen(navController, viewMode)
+            MainScreen(navController)
         }
     }
 
@@ -31,7 +29,9 @@ class MainActivity : ComponentActivity() {
         super.onNewIntent(intent)
         intent.action?.let { action ->
             if (action == Intent.ACTION_SEND && intent.type == "text/plain") {
-                viewMode.handleShareData(intent.getStringExtra(Intent.EXTRA_TEXT))
+                navController.currentBackStackEntry?.savedStateHandle?.apply {
+                    set("note", viewMode.handleShareData(intent.getStringExtra(Intent.EXTRA_TEXT)))
+                }
                 navController.navigate(Screens.SCREEN_CREATE_NOTE)
             }
         }

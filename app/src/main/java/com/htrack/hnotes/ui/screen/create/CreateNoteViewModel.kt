@@ -1,32 +1,15 @@
-package com.htrack.hnotes
+package com.htrack.hnotes.ui.screen.create
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.htrack.hnotes.MyApp
 import com.htrack.hnotes.data.Note
-import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
-import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
-import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_TEXT
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading get() = _isLoading.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            delay(500)
-            _isLoading.value = false
-        }
-    }
+class CreateNoteViewModel : ViewModel() {
     val noteDao = MyApp.todoDatabase.getNotesDao()
-
-    val noteList: LiveData<List<Note>> = noteDao.getAllNote()
 
     var selectedNote = mutableStateOf(Note())
 
@@ -86,20 +69,11 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun deleteTodo() {
+    fun deleteNote() {
         selectedNote.value.id.let {
             viewModelScope.launch(Dispatchers.IO) {
                 noteDao.deleteNote(it)
             }
-        }
-    }
-
-    fun handleShareData(stringExtra: String?) {
-        val d = stringExtra ?: ""
-        selectedNote = when {
-            d.isLocationUrl() -> mutableStateOf(Note(link = stringExtra ?: "", type = NOTE_TYPE_LOCATION))
-            d.isUrl() -> mutableStateOf(Note(link = stringExtra ?: "", type = NOTE_TYPE_LINK))
-            else -> mutableStateOf(Note(info = stringExtra ?: "", type = NOTE_TYPE_TEXT))
         }
     }
 }

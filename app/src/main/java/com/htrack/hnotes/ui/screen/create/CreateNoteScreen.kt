@@ -34,8 +34,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
+import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.isUrl
 import com.htrack.hnotes.shareTextIntent
 import com.htrack.hnotes.toActionViewIntent
@@ -50,10 +50,12 @@ import com.htrack.hnotes.ui.theme.ScreenCore
 @Composable
 fun CreateNoteScreen(
     navController: NavHostController,
-    viewModel: MainViewModel,
+    viewModel: CreateNoteViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
+
     var showAlert by remember { mutableStateOf(false) }
     val context = LocalContext.current
+
     ScreenCore(
         navigationIcon = {
             BackNavigationIcon {
@@ -93,6 +95,8 @@ fun CreateNoteScreen(
                     }
                 })
         }) { pv ->
+        viewModel.selectedNote.value =
+            navController.previousBackStackEntry?.savedStateHandle?.get<Note>("note") ?: Note()
         val openUrlLauncher =
             rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { _ -> }
         val customTextSelectionColors = TextSelectionColors(
@@ -175,7 +179,7 @@ fun CreateNoteScreen(
         }
         if (showAlert) {
             AlertDialog(dialogText = stringResource(R.string.are_sure_do_you_want_to_delete)) {
-                viewModel.deleteTodo()
+                viewModel.deleteNote()
                 navController.popBackStack()
                 showAlert = !showAlert
             }

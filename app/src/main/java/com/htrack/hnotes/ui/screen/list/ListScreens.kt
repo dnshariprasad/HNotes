@@ -38,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
 import com.htrack.hnotes.data.Note
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
@@ -47,7 +46,10 @@ import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
 import com.htrack.hnotes.ui.theme.ScreenCore
 
 @Composable
-fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun NoteListScreen(
+    navController: NavHostController,
+    viewModel: ListViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+) {
     val notesList by viewModel.noteList.observeAsState()
 
     ScreenCore(title = stringResource(R.string.your_notes),
@@ -62,7 +64,7 @@ fun NoteListScreen(navController: NavHostController, viewModel: MainViewModel) {
 }
 
 @Composable
-fun NoteListScreenActions(navController: NavHostController, viewModel: MainViewModel) {
+fun NoteListScreenActions(navController: NavHostController, viewModel: ListViewModel) {
     IconButton(onClick = {
         viewModel.selectedNote = mutableStateOf(Note())
         navController.navigate(SCREEN_CREATE_NOTE)
@@ -77,7 +79,7 @@ fun NoteListScreenActions(navController: NavHostController, viewModel: MainViewM
 @Composable
 fun NoteList(
     navController: NavHostController,
-    viewModel: MainViewModel,
+    viewModel: ListViewModel,
     paddingValues: PaddingValues,
     itemsList: List<Note>
 ) {
