@@ -9,10 +9,21 @@ import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_TEXT
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading get() = _isLoading.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            delay(500)
+            _isLoading.value = false
+        }
+    }
     val noteDao = MyApp.todoDatabase.getNotesDao()
 
     val noteList: LiveData<List<Note>> = noteDao.getAllNote()
