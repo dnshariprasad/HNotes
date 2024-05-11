@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.selection.LocalTextSelectionColors
-import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
@@ -27,13 +25,14 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.htrack.hnotes.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,7 +79,7 @@ fun ScreenCore(
 fun BackNavigationIcon(backNavigationAction: () -> Unit) {
     IconButton(onClick = backNavigationAction) {
         Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+            painter = painterResource(R.drawable.baseline_arrow_back_24),
             contentDescription = "Go back"
         )
     }
@@ -102,6 +101,7 @@ fun HTextField(
     hint: String = "",
     maxLines: Int = Int.MAX_VALUE,
     textStyle: TextStyle = TextStyle.Default,
+    textStyleHint: TextStyle = TextStyle.Default,
     onValueChange: (String?) -> Unit
 ) {
     TextField(
@@ -109,7 +109,7 @@ fun HTextField(
         maxLines = maxLines,
         value = text,
         onValueChange = onValueChange,
-        placeholder = { Text(hint) },
+        placeholder = { Text(text = hint, style = textStyleHint) },
         colors = TextFieldDefaults.colors(
             cursorColor = MaterialTheme.colorScheme.onPrimary,
             disabledTextColor = MaterialTheme.colorScheme.onPrimary,

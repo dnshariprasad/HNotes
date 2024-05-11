@@ -6,7 +6,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,8 +17,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -73,7 +70,7 @@ fun NoteListScreenActions(navController: NavHostController, viewModel: MainViewM
         navController.navigate(SCREEN_CREATE_NOTE)
     }) {
         Icon(
-            imageVector = Icons.Default.Add,
+            painter = painterResource(R.drawable.baseline_add_24),
             contentDescription = stringResource(R.string.content_description_add)
         )
     }
@@ -187,7 +184,7 @@ fun NoteItem(
                     }
 
                 },
-                contentScale = ContentScale.FillHeight, painter = painterResource(
+                painter = painterResource(
                     when (item.type) {
                         NOTE_TYPE_LINK -> {
                             R.drawable.outline_open_in_new_24
@@ -201,7 +198,8 @@ fun NoteItem(
                             R.drawable.outline_notes_24
                         }
                     }
-                ), contentDescription = stringResource(R.string.content_open_url)
+                ),
+                contentDescription = stringResource(R.string.content_open_url)
             )
         }
     }

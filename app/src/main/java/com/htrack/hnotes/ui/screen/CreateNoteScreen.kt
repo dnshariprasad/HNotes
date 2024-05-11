@@ -18,10 +18,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,6 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.R
+import com.htrack.hnotes.isUrl
+import com.htrack.hnotes.shareTextIntent
+import com.htrack.hnotes.toActionViewIntent
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.theme.AlertDialog
 import com.htrack.hnotes.ui.theme.BackNavigationIcon
@@ -84,16 +84,15 @@ fun CreateNoteScreen(
                     navController.popBackStack()
                 },
                 shareClick = {
-                    val intent = Intent(Intent.ACTION_SEND)
-                    intent.setType("text/plain")
-                    intent.putExtra(Intent.EXTRA_TITLE, viewModel.shareNoteTitle())
-                    intent.putExtra(Intent.EXTRA_TEXT, viewModel.shareNoteText())
-                    context.startActivity(
-                        Intent.createChooser(
-                            intent,
-                            context.getString(R.string.share_note)
+                    val t = viewModel.shareNoteText()
+                    if (t.isNotEmpty()) {
+                        context.startActivity(
+                            Intent.createChooser(
+                                t.shareTextIntent(),
+                                context.getString(R.string.share_note)
+                            )
                         )
-                    );
+                    }
                 })
         }) { pv ->
         val openUrlLauncher =
@@ -116,7 +115,8 @@ fun CreateNoteScreen(
                     maxLines = 2,
                     text = viewModel.selectedNote.value.title ?: "",
                     hint = stringResource(R.string.enter_title_here),
-                    textStyle = MaterialTheme.typography.titleMedium
+                    textStyle = MaterialTheme.typography.titleMedium,
+                    textStyleHint = MaterialTheme.typography.titleMedium
                 ) { t ->
                     viewModel.onTitleChanged(t)
                 }
@@ -131,6 +131,7 @@ fun CreateNoteScreen(
                     text = viewModel.selectedNote.value.info ?: "",
                     hint = stringResource(R.string.enter_note_here),
                     textStyle = MaterialTheme.typography.bodyMedium,
+                    textStyleHint = MaterialTheme.typography.bodyMedium
                 ) { t ->
                     viewModel.onInfoChanged(t)
                 }
@@ -148,22 +149,25 @@ fun CreateNoteScreen(
                         text = viewModel.selectedNote.value.link ?: "",
                         hint = stringResource(R.string.enter_url_here),
                         maxLines = 3,
-                        textStyle = MaterialTheme.typography.bodyMedium
+                        textStyle = MaterialTheme.typography.bodyMedium,
+                        textStyleHint = MaterialTheme.typography.bodyMedium
                     ) { t ->
                         viewModel.onLinkChanged(t)
                     }
                     Image(
+                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onPrimary),
                         modifier = Modifier.clickable {
-                            if ((viewModel.selectedNote.value.link?.length ?: 0) > 0) {
-                                val intent =
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(viewModel.selectedNote.value.link)
-                                    )
-                                openUrlLauncher.launch(intent)
+                            if ((viewModel.selectedNote.value.link?.length ?: 0) == 0
+                                || viewModel.selectedNote.value.link?.isUrl() == false
+                            ) {
+                                Toast.makeText(context, "Please enter title", Toast.LENGTH_SHORT)
+                                    .show()
+                                return@clickable
+                            }
+                            viewModel.selectedNote.value.link?.toActionViewIntent()?.let {
+                                openUrlLauncher.launch(it)
                             }
                         },
-                        contentScale = ContentScale.FillHeight,
                         painter = painterResource(R.drawable.outline_open_in_new_24),
                         contentDescription = stringResource(R.string.content_open_url)
                     )
@@ -190,21 +194,21 @@ fun CreateNoteScreenActions(
 ) {
     IconButton(onClick = { shareClick() }) {
         Icon(
-            imageVector = Icons.Default.Share,
+            painter = painterResource(R.drawable.outline_share_24),
             contentDescription = stringResource(R.string.content_description_share)
         )
     }
     if (showDelete) {
         IconButton(onClick = { deleteClick() }) {
             Icon(
-                imageVector = Icons.Default.Delete,
+                painter = painterResource(R.drawable.baseline_delete_outline_24),
                 contentDescription = stringResource(R.string.content_description_delete)
             )
         }
     }
     IconButton(onClick = { addClick() }) {
         Icon(
-            imageVector = Icons.Default.Done,
+            painter = painterResource(R.drawable.baseline_done_24),
             contentDescription = stringResource(R.string.content_description_done)
         )
     }

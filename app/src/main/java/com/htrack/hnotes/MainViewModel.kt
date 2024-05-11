@@ -31,12 +31,13 @@ class MainViewModel : ViewModel() {
         selectedNote.value = selectedNote.value.copy(link = link)
     }
 
-    fun shareNoteTitle(): String {
-        return selectedNote.value.title ?: ""
-    }
-
     fun shareNoteText(): String {
         val text = StringBuilder()
+        if (true == selectedNote.value.title?.isNotEmpty()) {
+            if (text.isNotEmpty())
+                text.append("\n")
+            text.append(selectedNote.value.title)
+        }
         if (true == selectedNote.value.info?.isNotEmpty()) {
             if (text.isNotEmpty())
                 text.append("\n")
