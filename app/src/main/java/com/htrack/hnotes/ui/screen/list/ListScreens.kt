@@ -1,4 +1,4 @@
-package com.htrack.hnotes.ui.screen
+package com.htrack.hnotes.ui.screen.list
 
 import android.content.Intent
 import android.net.Uri
@@ -30,8 +30,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
@@ -158,7 +156,9 @@ fun NoteItem(
                     )
                 if (true != item.info?.isEmpty())
                     Text(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp),
                         text = item.info ?: "",
                         fontSize = 14.sp,
                         maxLines = 2,

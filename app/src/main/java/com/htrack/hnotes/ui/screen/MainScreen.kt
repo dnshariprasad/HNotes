@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_NOTE_LIST
+import com.htrack.hnotes.ui.screen.create.CreateNoteScreen
+import com.htrack.hnotes.ui.screen.list.NoteListScreen
 
 @Composable
 fun MainScreen(navController: NavHostController, mainViewModel: MainViewModel) {

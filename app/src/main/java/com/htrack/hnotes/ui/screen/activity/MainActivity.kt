@@ -1,20 +1,14 @@
-package com.htrack.hnotes
+package com.htrack.hnotes.ui.screen.activity
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.Navigator
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.MainViewModel
 import com.htrack.hnotes.ui.screen.MainScreen
 import com.htrack.hnotes.ui.screen.Screens
 
