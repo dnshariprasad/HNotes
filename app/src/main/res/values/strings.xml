@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Hnotes</string>
     <string name="add_note">Add Note</string>
-    <string name="your_notes">Your Notes</string>
+    <string name="your_notes">Notes</string>
     <string name="enter_title_here">Title here</string>
     <string name="enter_url_here">Url here</string>
     <string name="enter_note_here">Info here</string>
