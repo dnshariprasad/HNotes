@@ -2,7 +2,7 @@ package com.htrack.hnotes.ui.screen.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.data.models.Note
 import com.htrack.hnotes.isLocationUrl
 import com.htrack.hnotes.isUrl
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK

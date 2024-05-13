@@ -1,15 +1,16 @@
 package com.htrack.hnotes.ui.screen.list
 
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.htrack.hnotes.MyApp
-import com.htrack.hnotes.data.Note
+import androidx.lifecycle.viewModelScope
+import com.htrack.hnotes.data.models.Note
+import com.htrack.hnotes.data.repo.NoteRepositoryImpl
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 
 class ListViewModel : ViewModel() {
-    val noteDao = MyApp.todoDatabase.getNotesDao()
-
-    val noteList: LiveData<List<Note>> = noteDao.getAllNote()
-
-    var selectedNote = mutableStateOf(Note())
+    var repository: NoteRepositoryImpl = NoteRepositoryImpl()
+    val notes: StateFlow<List<Note>> = repository.notes
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 }
+

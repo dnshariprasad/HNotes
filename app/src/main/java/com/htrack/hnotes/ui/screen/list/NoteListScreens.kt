@@ -24,9 +24,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -42,7 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
-import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.data.models.Note
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
 import com.htrack.hnotes.ui.screen.Screens.SCREEN_CREATE_NOTE
@@ -53,15 +52,13 @@ fun NoteListScreen(
     navController: NavHostController,
     viewModel: ListViewModel = viewModel()
 ) {
-    val notesList by viewModel.noteList.observeAsState()
-
+    val notes by viewModel.notes.collectAsState()
     ScreenCore(title = stringResource(R.string.your_notes),
         actions = { NoteListScreenActions(navController, viewModel) }) { pv ->
         NoteList(
             navController = navController,
-            viewModel = viewModel,
             paddingValues = pv,
-            itemsList = notesList ?: emptyList()
+            itemsList = notes
         )
     }
 }
@@ -69,7 +66,9 @@ fun NoteListScreen(
 @Composable
 fun NoteListScreenActions(navController: NavHostController, viewModel: ListViewModel) {
     IconButton(onClick = {
-        viewModel.selectedNote = mutableStateOf(Note())
+        navController.currentBackStackEntry?.savedStateHandle?.apply {
+            set("note", Note())
+        }
         navController.navigate(SCREEN_CREATE_NOTE)
     }) {
         Icon(
@@ -82,7 +81,6 @@ fun NoteListScreenActions(navController: NavHostController, viewModel: ListViewM
 @Composable
 fun NoteList(
     navController: NavHostController,
-    viewModel: ListViewModel,
     paddingValues: PaddingValues,
     itemsList: List<Note>
 ) {
@@ -112,7 +110,9 @@ fun NoteList(
                 linkClickable = {
 
                 }) {
-                viewModel.selectedNote = mutableStateOf(n)
+                navController.currentBackStackEntry?.savedStateHandle?.apply {
+                    set("note", n)
+                }
                 navController.navigate(SCREEN_CREATE_NOTE)
             }
         }

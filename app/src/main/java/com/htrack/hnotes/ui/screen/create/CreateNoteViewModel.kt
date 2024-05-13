@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.htrack.hnotes.MyApp
-import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.data.models.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

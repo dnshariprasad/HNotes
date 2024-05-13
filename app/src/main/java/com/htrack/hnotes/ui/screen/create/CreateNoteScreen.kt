@@ -38,7 +38,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.htrack.hnotes.R
-import com.htrack.hnotes.data.Note
+import com.htrack.hnotes.data.models.Note
 import com.htrack.hnotes.isUrl
 import com.htrack.hnotes.shareTextIntent
 import com.htrack.hnotes.toActionViewIntent
