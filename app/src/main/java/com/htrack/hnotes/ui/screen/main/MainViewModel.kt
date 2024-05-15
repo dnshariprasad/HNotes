@@ -8,12 +8,15 @@ import com.htrack.hnotes.isUrl
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LINK
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_LOCATION
 import com.htrack.hnotes.ui.screen.NoteTypes.NOTE_TYPE_TEXT
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(): ViewModel() {
     private val _isLoading = MutableStateFlow(true)
     val isLoading get() = _isLoading.asStateFlow()
 

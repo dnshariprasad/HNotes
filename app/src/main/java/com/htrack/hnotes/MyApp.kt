@@ -3,7 +3,9 @@ package com.htrack.hnotes
 import android.app.Application
 import androidx.room.Room
 import com.htrack.hnotes.db.NotesDb
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MyApp : Application() {
     companion object {
         lateinit var todoDatabase: NotesDb
