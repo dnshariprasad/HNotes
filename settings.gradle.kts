@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Hnotes"
+rootProject.name = "Htrack"
 include(":app")
  

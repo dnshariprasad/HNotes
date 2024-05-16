@@ -3,6 +3,6 @@
     <style name="Theme.splashScreenTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#FFFAFAFF</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
-        <item name="postSplashScreenTheme">@style/Theme.Hnotes</item>
+        <item name="postSplashScreenTheme">@style/Theme.Htrack</item>
     </style>
 </resources>
